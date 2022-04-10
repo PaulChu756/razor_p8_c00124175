@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace p8_c00124175.Pages;
 
 // Paul Chu
@@ -20,11 +19,14 @@ public class IndexModel : PageModel
     public void OnGet()
     {
     }
+    
+    [BindProperty]
+    public string DisCoutProducts { get; set; }
 }
 
 public static class DisContProducts
 {
-    public static string disContProducts()
+    public static string disContProducts(string disCoutProducts)
     {
         using (var db = new p8_C00124175.p8_C00124175())
         {
@@ -35,7 +37,7 @@ public static class DisContProducts
                     where products.IsDiscontinued.ToString() == "1"
                     select products.ProductName;
 
-                if (!results.Any())
+                if (!results.Any() || string.IsNullOrEmpty(disCoutProducts))
                     return $"";
 
                 string disProducts = "";

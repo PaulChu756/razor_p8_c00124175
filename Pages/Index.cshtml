@@ -1,17 +1,15 @@
-﻿<!--
-// Paul Chu
-// C00124175
-// CMPS 358
-// CMPS 358 Spring 2021 Programming Project #8
--->
-
-@page
+﻿@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <p>Want to know which products are discontinued? </p>
-    <input type="hidden" asp-for="@DisContProducts.disContProducts()" value="placeholder-value">
+    <form method="post" enctype="multipart/form-data">
+        <p>Want to know which products are discontinued? </p>
+        <input type="hidden" asp-for="DisCoutProducts" value="Submit">
+        <input type="submit" value="Submit">
+    </form>
+    <br/><br/>
+    <p>@DisContProducts.disContProducts(@Model.DisCoutProducts)</p>
 </div>
