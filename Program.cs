@@ -1,3 +1,8 @@
+// Paul Chu
+// C00124175
+// CMPS 358
+// CMPS 358 Spring 2021 Programming Project #8
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
