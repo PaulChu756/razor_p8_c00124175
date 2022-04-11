@@ -25,6 +25,9 @@ public class IndexModel : PageModel
     
     [BindProperty]
     public string ListCustomersInCountry { get; set; }
+    
+    [BindProperty]
+    public string ListSupplieresInCountry { get; set; }
 }
 
 //Problem 3a
@@ -82,8 +85,55 @@ public static class CustomersInCountry
 
                 string customers = "";
                 foreach (var c in results)
-                    customers += $" First Name : {c.firstName}, Last Name : {c.lastName}, Phone : {c.phone} ";
+                    customers += $"First Name: {c.firstName}, " +
+                                 $"Last Name: {c.lastName}, " +
+                                 $"Phone: {c.phone} ";
                 return customers;
+            }
+
+            catch (Exception e)
+            {
+                return $"Country does not exist, please enter again : {e}";
+            }
+        }
+    }
+}
+
+//Problem 3c
+public static class SuppliersInCountry
+{
+    public static string suppliersInCountry(string country)
+    {
+        using (var db = new p8_C00124175.p8_C00124175())
+        {
+            try
+            {
+                var results =
+                    from c in db.Suppliers
+                    where c.Country.Equals(country)
+                    select new {
+                        id = c.Id, 
+                        companyName = c.CompanyName, 
+                        contactName = c.ContactName, 
+                        phone = c.Phone, 
+                        fax = c.Fax, 
+                        city = c.City
+                    };
+                
+                if (!results.Any() || string.IsNullOrEmpty(country))
+                    return $"";
+
+                string suppliers = "";
+                foreach (var c in results)
+                {
+                    suppliers += $"ID: {c.id} " +
+                                 $"Company Name: {c.companyName} " +
+                                 $"Contact Name: {c.contactName} " +
+                                 $"Phone: {c.phone} " +
+                                 $"Fax: {c.fax} " +
+                                 $"City:{c.city} ";
+                }
+                return suppliers;
             }
 
             catch (Exception e)

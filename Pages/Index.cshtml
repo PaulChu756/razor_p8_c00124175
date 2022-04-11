@@ -16,10 +16,20 @@
 
 <div class="text-center">
     <form method="post" enctype="multipart/form-data">
-        Enter a country:
+        <p>Enter a country to know the customers in the country:</p>
         <input type="text" asp-for="ListCustomersInCountry">
         <input type="submit" value="Submit">
     </form>
     <br><br>
     <p>@CustomersInCountry.customersInCountry(@Model.ListCustomersInCountry)</p>
+</div>
+
+<div class="text-center">
+    <form method="post" enctype="multipart/form-data">
+        <p>Enter a country to know the suppliers in the country:</p>
+        <input type="text" asp-for="ListSupplieresInCountry">
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    <p>@SuppliersInCountry.suppliersInCountry(@Model.ListSupplieresInCountry)</p>
 </div>
