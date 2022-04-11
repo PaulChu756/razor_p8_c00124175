@@ -22,8 +22,12 @@ public class IndexModel : PageModel
     
     [BindProperty]
     public string DisCoutProducts { get; set; }
+    
+    [BindProperty]
+    public string ListCustomersInCountry { get; set; }
 }
 
+//Problem 3a
 public static class DisContProducts
 {
     public static string disContProducts(string disCoutProducts)
@@ -48,7 +52,43 @@ public static class DisContProducts
             }
             catch (Exception e)
             {
-                return $"Error for searching for any discontinue products";
+                return $"Error for searching for any discontinue products {e}";
+            }
+        }
+    }
+}
+
+//Problem 3b
+public static class CustomersInCountry
+{
+    public static string customersInCountry(string country)
+    {
+        using (var db = new p8_C00124175.p8_C00124175())
+        {
+            try
+            {
+                var results =
+                    from c in db.Customers
+                    where c.Country.Equals(country)
+                    select new
+                    {
+                        firstName = c.FirstName, 
+                        lastName = c.LastName, 
+                        phone = c.Phone
+                    };
+                
+                if (!results.Any() || string.IsNullOrEmpty(country))
+                    return $"";
+
+                string customers = "";
+                foreach (var c in results)
+                    customers += $" First Name : {c.firstName}, Last Name : {c.lastName}, Phone : {c.phone} ";
+                return customers;
+            }
+
+            catch (Exception e)
+            {
+                return $"Country does not exist, please enter again : {e}";
             }
         }
     }

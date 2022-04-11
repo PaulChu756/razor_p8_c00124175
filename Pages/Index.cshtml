@@ -13,3 +13,13 @@
     <br/><br/>
     <p>@DisContProducts.disContProducts(@Model.DisCoutProducts)</p>
 </div>
+
+<div class="text-center">
+    <form method="post" enctype="multipart/form-data">
+        Enter a country:
+        <input type="text" asp-for="ListCustomersInCountry">
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    <p>@CustomersInCountry.customersInCountry(@Model.ListCustomersInCountry)</p>
+</div>
