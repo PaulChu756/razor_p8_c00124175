@@ -32,6 +32,9 @@ public class IndexModel : PageModel
 
     [BindProperty] 
     public string DisContProductsBySuppler { get; set; }
+    
+    [BindProperty]
+    public string ShowDetailsOfGivenOrder { get; set; }
 }
 
 //Problem 3a
@@ -188,6 +191,60 @@ public static class ProductsThatAreDisContBySupplier
             catch (Exception e)
             {
                 return $"Supplier does not exist, please enter again : {e}";
+            }
+        }
+    }
+}
+
+//Problem 3e
+public static class DetailsOfOrder
+{
+    public static string detailsOfOrder(string orderNumber)
+    {
+        using (var db = new p8_C00124175.p8_C00124175())
+        {
+            try
+            {
+                var results =
+                    from o in db.Orders
+                    join oi in db.OrderItems
+                        on o.Id equals oi.OrderId
+                    join c in db.Customers
+                        on o.CustomerId equals c.Id
+                    join p in db.Products
+                        on oi.ProductId equals p.Id
+                    orderby oi.Id
+                    where o.OrderNumber == orderNumber
+                    select new
+                    {
+                        firstName = c.FirstName,
+                        lastName = c.LastName,
+                        productName = p.ProductName,
+                        unitprice = Encoding.UTF8.GetString(p.UnitPrice, 0, p.UnitPrice.Length),
+                        qty = oi.Quantity,
+                        total = Encoding.UTF8.GetString(o.TotalAmount, 0, o.TotalAmount.Length),
+                    };
+
+                if (!results.Any() || string.IsNullOrEmpty(orderNumber))
+                    return $"";
+                
+                string customers = "";
+                foreach (var c in results)
+                {
+                    customers +=
+                        $" First Name: {c.firstName} " +
+                        $"Last Name: {c.lastName} " +
+                        $"Product Name: {c.productName} " +
+                        $"Unit Price: {c.unitprice} " +
+                        $"Quantity: {c.qty} " +
+                        $"Total: {c.total} ";
+                }
+                return customers;
+            }
+
+            catch (Exception e)
+            {
+                return $"Order does not exist, please enter again : {e}";
             }
         }
     }
