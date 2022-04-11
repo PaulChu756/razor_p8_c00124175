@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace p8_c00124175.Pages;
 
@@ -28,6 +29,9 @@ public class IndexModel : PageModel
     
     [BindProperty]
     public string ListSupplieresInCountry { get; set; }
+
+    [BindProperty] 
+    public string DisContProductsBySuppler { get; set; }
 }
 
 //Problem 3a
@@ -139,6 +143,51 @@ public static class SuppliersInCountry
             catch (Exception e)
             {
                 return $"Country does not exist, please enter again : {e}";
+            }
+        }
+    }
+}
+
+//Problem 3d
+public static class ProductsThatAreDisContBySupplier
+{
+    public static string disContProductsBySupplier(string supplierName)
+    {
+        using (var db = new p8_C00124175.p8_C00124175())
+        {
+            try
+            {
+                var results =
+                    from s in db.Suppliers
+                    join p in db.Products
+                        on s.Id equals p.SupplierId
+                    orderby s.CompanyName
+                    where p.IsDiscontinued.ToString() == "0" && s.CompanyName == supplierName
+                    select new {
+                        companyName = s.CompanyName,
+                        productName = p.ProductName, 
+                        unitPrice = Encoding.UTF8.GetString(p.UnitPrice,0, p.UnitPrice.Length), 
+                        package = p.Package
+                    };
+
+                if (!results.Any() || string.IsNullOrEmpty(supplierName))
+                    return $"";
+                
+                string suppliers = "";
+                foreach (var c in results)
+                {
+                    suppliers +=
+                        $"Company Name: {c.companyName}" +
+                        $" Product Name: {c.productName}" +
+                        $" Unit Price: {c.unitPrice}" +
+                        $" Package: {c.package} ";
+                }
+                return suppliers;
+            }
+
+            catch (Exception e)
+            {
+                return $"Supplier does not exist, please enter again : {e}";
             }
         }
     }

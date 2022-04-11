@@ -33,3 +33,13 @@
     <br><br>
     <p>@SuppliersInCountry.suppliersInCountry(@Model.ListSupplieresInCountry)</p>
 </div>
+
+<div class="text-center">
+    <form method="post" enctype="multipart/form-data">
+        <p>Enter a Supplier to know the discontinued:</p>
+        <input type="text" asp-for="DisContProductsBySuppler">
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    <p>@ProductsThatAreDisContBySupplier.disContProductsBySupplier(@Model.DisContProductsBySuppler)</p>
+</div>
