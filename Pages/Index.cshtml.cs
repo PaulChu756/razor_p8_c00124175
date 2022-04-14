@@ -236,8 +236,12 @@ public static class DetailsOfOrder
                         $"Last Name: {c.lastName} " +
                         $"Product Name: {c.productName} " +
                         $"Unit Price: {c.unitprice} " +
-                        $"Quantity: {c.qty} " +
-                        $"Total: {c.total} ";
+                        $"Quantity: {c.qty}";
+                    
+                    double convertUnitPriceToDouble = Double.Parse(c.unitprice);
+                    double subTotal = convertUnitPriceToDouble * c.qty;
+                    customers += $" SubTotal: {subTotal}";
+
                 }
                 return customers;
             }
